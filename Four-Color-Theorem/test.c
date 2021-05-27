@@ -3,11 +3,10 @@
 
 using namespace std;
 
-int i,j,x;
+int i,j;
 int color_save;
 int color_variety = 1;
 int table[30][30];
-int colors[100] = {0};
 int country_relationship[100][100]={0};
 vector<vector<int>> S;
 vector<int>country_color(100,96);
