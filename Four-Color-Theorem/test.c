@@ -73,7 +73,7 @@ int main(){
     freopen("color900_1_out.txt","w",stdout);
     for(i=0; i<30; i++) {
     	for(j=0; j<30; j++) {
-    		scanf("%d", &table[i][j]);
+    		scanf("%2d", &table[i][j]);
 
     		} 
     }
