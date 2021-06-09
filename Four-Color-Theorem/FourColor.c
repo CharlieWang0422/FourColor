@@ -1,15 +1,20 @@
 #include<bits/stdc++.h>
+#include<unordered_set>
 
 
 using namespace std;
+
 
 int i,j;
 int color_save;
 int color_variety = 1;
 int table[30][30];
+unsigned int numofcountry;
 int country_relationship[100][100]={0};
-vector<vector<int>> S;
-vector<int>country_color(100,96);
+// ,color_group[195][100] = {0};
+vector<vector<int>> S,group;
+vector<int>country_color(100,96),country_sequence,color_group;
+
 
 
  // DFS function
@@ -79,7 +84,17 @@ int main(){
     }
     // check neigbor relationship
     for(i=0;i<30;i++){
-    	for(j=0;j<30;j++){	
+    	for(j=0;j<30;j++){
+    		// record appear country
+    		if(table[i][j] !=0){
+    			for(unsigned int x = 0; x < country_sequence.size();x++){
+    				if(country_sequence[x] == table[i][j]){
+    					goto place1;
+    				}
+    			}
+    			country_sequence.push_back(table[i][j]);
+    		}
+    		place1:
     		if(i!=29){
     			country_relationship[table[i][j]][table[i+1][j]] = 1;
     		}
@@ -95,7 +110,36 @@ int main(){
     	}
     }
     DFS(1);
-    // fill color
+    // change color sequence
+    for(unsigned int x=0 ; x < country_sequence.size() ; x++){
+    	for(auto &c:color_group){
+    		if(country_color[country_sequence[x]] == c){
+    			goto place2;
+    		}
+    	}
+    	color_group.push_back(country_color[country_sequence[x]]);
+    	place2:
+    	continue;
+    }
+    for(i = 0;i<color_variety;i++){
+    	group.push_back({});
+    	group[i].push_back(color_group[i]);
+    }
+    for(unsigned int x = 0;x < country_sequence.size();x++){
+    	for(i = 0 ;  i < color_variety ; i++){
+    		if(country_color[country_sequence[x]] == group[i][0]){
+    			group[i].push_back(country_sequence[x]);
+    		}
+    	}
+    }
+    for(i = 0 ; i < color_variety ; i++){
+    	for(unsigned int x =1 ; x<group[i].size() ; x++){
+    		country_color[group[i][x]] = 97 + i;
+    	}
+    }
+ 	// for(auto &c : color_group){
+  //   	cout << c<<"\n";
+  //   }
 	 for(i=0;i<30;i++){
     	for(j=0;j<30;j++){	
     		table[i][j] = country_color[table[i][j]];
